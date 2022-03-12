@@ -1,3 +1,2 @@
 # WebDevelopment
-## JavaScript
 - Clicking Game
