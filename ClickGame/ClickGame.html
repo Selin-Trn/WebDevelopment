@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Clicking Game</title>
+        <style type="text/css">
+
+            body {
+                color: white;
+                font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
+
+            #shape {
+                width: 150px;
+                height: 150px;
+                display: none;
+                position: relative;
+                z-index: 2;
+            }
+
+            h1 {
+                background-color: darkslateblue;
+                padding: 25px;
+                width: fit-content;
+                border-radius: 10px;
+            }
+            #timer {
+                background-color: rgb(68, 68, 68);
+                padding: 15px;
+                width: fit-content;
+                border-radius: 5px;
+                font-weight: 500;
+            }
+
+            #start-button {
+                background-color: darkgray;
+                font-size: medium;
+                font-weight: 400;
+                padding: 5px;
+                margin: 10px;
+                border-radius: 5px;
+            }
+            #start-button:hover {
+                box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+        <h1>Click as many shapes as possible before the time runs out!</h1>
+        <div id="timer">Time left: 30 seconds</div>
+        <div id="shape"></div>
+        <button id="start-button">Click to start</button>
+
+        <script type="text/javascript">
+            
+            // Timer
+            document.getElementById("start-button").onclick = function() {
+                var timeLeft = 30;
+                var elem = document.getElementById("timer");
+                var timerId = setInterval(countdown, 1000);
+                var correctClicks = 0;
+                document.getElementById("start-button").style.visibility = "hidden";
+                setTimeout(makeShapeAppear(), 5000);
+
+                function countdown() {
+                    if (timeLeft == -1) {
+                        clearTimeout(timerId);
+                        document.getElementById("shape").style.visibility = "hidden";
+                        elem.innerHTML = "Time's up! Your score is " + correctClicks;
+                    }
+                    else {
+                        elem.innerHTML = "Time left: " + timeLeft + " seconds";
+                        timeLeft--;
+                        document.getElementById("shape").onclick = function() {
+                            setTimeout(makeShapeAppear(), 200);
+                            correctClicks++;
+                        }
+                    }
+                }
+            }
+
+            // Randomized shapes
+            function getRandomColor() {
+                    var letters = '0123456789ABCDEF'.split('');
+                    var color = '#';
+                    for (var i = 0; i < 6; i++ ) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+            }
+            function makeShapeAppear() {
+                var top = Math.random() * 500;
+                var left = Math.random() * 800;
+                if (Math.random() > 0.5) {
+                    document.getElementById("shape").style.borderRadius = "50%";
+                } 
+                else {
+                    
+                    document.getElementById("shape").style.borderRadius = "0";
+                    
+                }
+                document.getElementById("shape").style.backgroundColor = getRandomColor();
+                document.getElementById("shape").style.top = top + "px";
+                document.getElementById("shape").style.left = left + "px";
+                document.getElementById("shape").style.display = "block";
+            }
+
+            
+
+        </script>
+    </body>
+</html>
