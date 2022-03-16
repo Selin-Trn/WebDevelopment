@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript" src="jquery-ui/jquery-ui.min.js"></script>
+        <link type="jquery-ui/jquery-ui.css" rel="stylesheet">
+
+        <style type="text/css">
+            body {
+                font-family:'Courier New', Courier, monospace;
+                padding:0;
+                margin:0;
+            }
+            #topbar {
+                width:100%;
+                padding:5px 0;
+                height: 30px;
+                background-color: rgb(38, 36, 44);
+            }
+            h1 {
+                float: left;
+                position: absolute;
+                top: -15px;
+                color: white;
+            }
+            #wrapper {
+                width: 230px;
+                margin: 0 auto;
+                position: relative;
+                top: 5px;
+            }
+            .toggle-button {
+                float: left;
+            }
+            .toggle-button:hover {
+                background-color: rgb(203, 219, 132);
+                float: left;
+            }
+            .on {
+                background-color: rgb(121, 196, 171);
+            }
+            .console {
+                float: left;
+                width: 50%;
+                border: 0px 1px 0px 1px;
+                border-color: gray;
+            }
+
+            #html-console {
+                resize: none;
+            }
+            .hidden {
+                display: none;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div id="topbar">
+            <h1>CodePlayer</h1>
+            <div id="wrapper">
+                <button class="toggle-button on" id="html">HTML</button>
+                <button class="toggle-button" id="css">CSS</button>
+                <button class="toggle-button" id="js">JavaScript</button>
+                <button class="toggle-button on" id="output">Output</button>
+            </div>
+        </div>
+
+        <div id="console-wrapper">
+            <textarea class="console" id="html-console"><p id="inputString">Hello World!</p></textarea>
+            <textarea class="console hidden" id="css-console">p {color: red;}</textarea>
+            <textarea class="console hidden" id="js-console">document.getElementById("inputString").innerHTML =  "Enter something";</textarea>
+            <iframe class="console" id="output-console"></iframe>
+        </div>
+
+        <script type="text/javascript">
+
+            function updateOutput() {
+                $("#output-console").contents().find("html").html("<html><head><style type='text/css'>" + $("#css-console").val() + "</style></head><body>" + $("#html-console").val() + "</body></html>");
+                document.getElementById("output-console").contentWindow.eval($("#js-console").val());
+            }
+
+            updateOutput();
+
+
+
+            $(".toggle-button").click(function() {
+                $(this).toggleClass("on")
+
+                var consoleId = $(this).attr("id") + "-console";
+                $("#"+ consoleId).toggleClass("hidden");
+                var toggledButtons = $('.on').length;
+                $(".console").width($(window).width()/toggledButtons - 5);
+            });
+
+            $(".console").height(($(window).height() - $("#topbar").height()) - 15);
+            $(".console").width(($(window).width()/2) - 5);
+
+
+            $("#html-console").on('change keyup paste', function() {
+                updateOutput();
+            });
+            $("#js-console").on('change keyup paste', function() {
+                updateOutput();
+            });
+            $("#css-console").on('change paste', function() {
+                updateOutput();
+            });
+
+        </script>
+    </body>
+</html>
